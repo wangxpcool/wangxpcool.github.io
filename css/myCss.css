@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+.my-text{
+	text-align: center;
+	margin:0 auto;
+	width:40%;
+}
+.func{
+	position:relative;
+	float:right;
+	right:20%;
+}
+
+.myarticles{
+	position:relative;
+	left:15%;
+}
