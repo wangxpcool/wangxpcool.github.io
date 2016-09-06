@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Blog Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">我的第一篇文章</h2>
+        <p class="lead blog-description">my first article</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2016.9.6 by <a href="#">wangxp</a></p>
+
+            <p>当你看到我这篇文章的时候，其实我已经开始准备自己的网站了好久了，从一开始阿里云的域名购买到现在的成功部署，前后一共一个多月了，虽然我也学到了很多东西，嗯还是不错的</p>
+            <hr>
+            <p>其实就是闲的无聊，没事写个网页啊什么的来陶冶下情操~~~嗯，这个网站我主要会把一些自己写的东西放上来，然后偶尔分享一些好玩的文章</p>
+            <blockquote>
+              <p>Talk is cheap, let me show you the code</p>
+            </blockquote>
+            <p></p>
+            <h2></h2>
+            <p>首先来谈谈这个网站的搭建过程吧，最开始看到阿里云域名的促销计划，然后顺便搜了一下自己的域名有没有被使用，然而果然，名字叫wangxp的域名后缀好一点都基本上没了，像那些.com,.cn啊什么的
+            	然后看到现在这个域名还不错，.site。当时看它便宜就顺便买下来了,（其实我是入了一个大大的坑）。。<br>
+            	然后才发现卧槽，买了域名之后还需要99步才能搭建一个属于自己的网站，后面这条不归路就慢慢的走下去了。。<br>了解了服务器后想着，一个月几十块的服务器嘛，也不会太贵，
+            	但是越往后。还需要网站备案啊什么的，直接放弃了<br>
+            	过了一个月，哎突然又心血来潮，跑去开始玩github，发现哎可以制作静态网站，于是我想到了之前买了的域名，嘿嘿嘿<br>
+            	对的，我就用github pages做了一个静态网页，然后把我的域名dns给了我的github网页（步骤就写在最后吧）
+            </p>
+            <hr>
+            <h3>我的搭建网站过程</h3>
+            <ul>
+              <li>买一个域名</li>
+              <li>在github上创建一个账户，创建一个reponsitory仓库，名字叫做username.github.io,这样的话你的主页就能够被不需要/后缀访问</li>
+              <li>在reponsitory里写上一个index.html</li>
+              <li>设置域名解析，把域名指向你的github页面</li>
+              <li>done</li>
+              <li><span>注：这种方式很多利弊，比如说只能制作静态网页，毕竟是占了人家的免费服务嘛，所以方法仅供参考，如有正常建站需求的我建议你还是老老实实
+				买个服务器好点</span></li>
+				<li>参考文献：<a href="https://pages.github.com">https://pages.github.com</a><br>
+				<a href="http://jingyan.baidu.com/article/dca1fa6fa1e403f1a5405262.html">将GitHub关联到域名上_百度经验</a></li>
+            </ul>
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Facebook</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/docs.min.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
