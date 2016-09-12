@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="wangxp.site,个人网站,文章">
+    <meta name="author" content="sharping,wangxp">
+
+    <title>简单的java爬虫-爬取糗事百科</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="/about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">简单的java爬虫-爬取糗事百科</h2>
+        <p class="lead blog-description">simple Java Python on qiushibaike.com</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2016.9.12 by <a href="#">wangxp</a></p>
+            <p>陆陆续续学javaPython很久了，前几天有个想法是爬取QQ空间的相册图片，结果自己还是太年轻，
+            因为QQ空间的结构实在是太复杂，模拟登陆不上去所以暂时放弃。于是为了解愤，找了一个小站来练练手//嘿嘿没错就是你 ，糗事百科！</p>
+            <hr>
+            <p>&nbsp;&nbsp;首先找到我们的源目标：<a href="http://www.qiushibaike.com">http://www.qiushibaike.com</a>，因为是想找图片，所以去图片区，目标链接<a href="http://www.qiushibaike.com/imgrank/">http://www.qiushibaike.com/imgrank/</a></p>
+            <h3><p>&nbsp;&nbsp;1、获取首页信息</p></h3>
+            <ol>
+            	<li><p>通过java内置Api java.net创建一个Url</p></li>
+            	<li><p>用UrlConnection创建连接//这里要注意一下的是糗百网站需要自行设置一下请求头，不然访问不了</p></li>
+            	<li><p>创建一个输入流将获取到的Url内容保存在String中</p></li>
+            </ol>
+            <h3><p>&nbsp;&nbsp;2、获取网页中各个图片链接</p></li></h3>
+            <ol>
+            	<li><p>在首页中，用F12开发者工具检查所要获取图片信息</p></li>
+            	<li><p>可以看到，糗百的每个图片都有一个特定的Url,并且包含在一个&lt;a&gt;标签中</p></li>
+            	<li><p>此时我们就要用正则将处在这个A标签中的内容匹配出来，我写的正则是&lt;a href=\&quot;/article/\\d+?\&quot; target=\&quot;_blank\&quot;&gt;&lt;img src=\&quot;(.+?)\&quot; alt=&quot;</p></li>
+            	<li><p>通过Pattern.matcher我们就能得到每个图片的链接了</p></li>
+            </ol>
+            <h3><p>&nbsp;&nbsp;3、保存图片到本地</p></li></h3>
+            <ol>
+            	<li><p>继续接上的链接，我们就可以通过这个链接直接访问图片了，比如这个<a href="http://pic.qiushibaike.com/system/pictures/11750/117501303/medium/app117501303.jpg">http://pic.qiushibaike.com/system/pictures/11750/117501303/medium/app117501303.jpg</a></p></li>
+            	<li><p>然后我们就可以通过刚才第一步的方法获取到这个图片的输入流，并将其保存在本地</p></li>
+            	<li><p>值得注意的是这里的输入流，可以通过简单的方式一步一步地读取输入流，然后直接写入进一个文件输出流</p></li>
+            	<li><p>就像这样：<br>
+            	InputStream input=connection.getInputStream;<br>
+            			FileOutputStream out=new FileOutputStream("xxx.jpg");<br>
+            			while(input.read()!=-1)<br>
+            			out.write();<br>
+            	</p></li>
+            	<p>当然这只是简化版的，具体的方式可以百度</p>
+            </ol>
+            <h3><p>&nbsp;&nbsp;4、fix and test</p></h3>
+            <ul>
+            	<li>因为上述步骤只获取了一个页面的图片，所以我们需要再看看第二页。
+            	相比于第一页我们可以发现，糗事百科的页数在于网页后缀的page后面，而且当我们直接改变这个url居然能够正常访问，
+            	那么问题就变简单了，直接用一个for循环在url后缀加上page/&lt; i &gt;就行了</li>
+            	<li>然后是图片保存问题，因为有非常多的图片，所以我们可以使用多个文件夹来保存，文件夹名称定义在了for循环里，文件名称定义在了读输入流里</li>
+            </ul>
+            <p>效果截图：</p>
+            <img alt="" src="">
+            <p>以下是源代码</p>
+<hr>
+
+<pre><code>
+<p>package my;</p>
+
+<p>import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;</p>
+
+<p>public class step0 {
+	public static void main(String[] args) {
+		for(int page=1;page&lt;=10;page++){//获取前十页图片区的图片
+			try {</p>
+
+			String html=getResult(&quot;http://www.qiushibaike.com/imgrank/page/&quot;+page);
+			List&lt;String&gt; list=getNeeds(html);
+			File f=new File(&quot;f:\\temp\\images&quot;+page);
+			f.mkdir();
+			for(int i=0;i&lt;list.size();i++){
+				System.out.println(list.get(i));
+				saveImage(list.get(i), &quot;images&quot;+page+&quot;\\qiushi&quot;,i);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+static List&lt;String&gt; getNeeds(String result){//正则匹配图片链接
+
+    String regex=&quot;&lt;a href=\&quot;/article/\\d+?\&quot; target=\&quot;_blank\&quot;&gt;&lt;img src=\&quot;(.+?)\&quot; alt=&quot;;
+
+    Pattern pattern = Pattern.compile(regex);
+	Matcher matcher = pattern.matcher(result);
+	// 是否存在匹配成功的对象
+	Boolean isFind = matcher.find();
+	ArrayList&lt;String&gt; list= new ArrayList&lt;String&gt;();
+	while (isFind) {
+
+		list.add(matcher.group(1));
+		isFind = matcher.find();
+	}
+	return list;
+}
+static String getResult(String url){//把网页保存在String里
+	String result = &quot;&quot;;  
+    // 定义一个缓冲字符输入流  
+    BufferedReader in = null;  
+    try {  
+        // 将string转成url对象  
+        URL realUrl = new URL(url);  
+        // 初始化一个链接到那个url的连接  
+        URLConnection connection = realUrl.openConnection();  
+        connection.setRequestProperty(&quot;User-Agent&quot;,&quot;Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko&quot;);
+        //这里需要自定义一下请求头，不然糗事百科主页不给访问
+        // 开始实际的连接  
+        connection.connect();  
+        // 初始化 BufferedReader输入流来读取URL的响应  
+        in = new BufferedReader(new InputStreamReader(  
+                connection.getInputStream(),&quot;utf-8&quot;));
+        // 用来临时存储抓取到的每一行的数据  
+        String line;
+        while ((line = in.readLine()) != null) {  
+            // 遍历抓取到的每一行并将其存储到result里面  
+        	result += line;  
+        }  
+    } catch (Exception e) {
+        System.out.println(&quot;发送GET请求出现异常！&quot; + e);  
+        e.printStackTrace();  
+    }  
+    // 使用finally来关闭输入流  
+    finally {
+        try {
+            if (in != null) {
+                in.close();
+            }
+        } catch (Exception e2) {  
+            e2.printStackTrace();  
+        }  
+    }
+	return result;
+}
+static void saveImage(String strUrl,String name,int nameIndex) throws IOException{//保存图片到本地
+
+	//构造URL
+	URL url = new URL(strUrl);
+
+	//构造连接
+	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+	//这个网站要模拟浏览器才行
+	conn.setRequestProperty(&quot;User-Agent&quot;,&quot;Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko&quot;);
+
+	//打开连接
+	conn.connect();
+	//打开这个网站的输入流
+	InputStream inStream = conn.getInputStream();
+
+	//用这个做中转站 ，把图片数据都放在了这里，再调用toByteArray()即可获得数据的byte数组
+	ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+
+	byte [] buf = new byte[1024];
+
+	int len = 0;
+	//读取图片数据
+	while((len=inStream.read(buf))!=-1){
+	outStream.write(buf,0,len);
+	}
+	inStream.close();
+	outStream.close();
+	String path=&quot;f:\\temp\\&quot;+name+nameIndex+&quot;.jpg&quot;;
+	//把图片数据填入文件中
+	File file = new File(path);
+
+	FileOutputStream op = new FileOutputStream(file);
+
+	op.write(outStream.toByteArray());
+	System.out.println(path+&quot; has been saved\n&quot;);
+	op.close();
+
+}
+
+}
+</code></pre>
+
+
+
+
+
+            <hr>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="http://github.com">GitHub</a></li>
+              <li><a href="http://www.oschina.net">oschina</a></li>
+              <li><a href="">广告位</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
