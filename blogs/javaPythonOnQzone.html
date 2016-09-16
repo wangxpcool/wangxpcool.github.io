@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="wangxp.site,个人网站,文章">
+    <meta name="author" content="sharping,wangxp">
+
+    <title>java爬虫进阶篇-爬取qq空间相册</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="/about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">java爬虫进阶篇-爬取qq空间相册</h2>
+        <p class="lead blog-description">Java Python on qzone.qq.com</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2016.9.16 by <a href="#">wangxp</a></p>
+            <p>接上篇。前几天有爬取空间相册的想法，可是因为QQ空间的结构复杂，没能模拟登陆成功，所以我换了种方法。采用selenium框架模拟浏览器直接登陆爬取</p>
+            <hr>
+            <h3><p>&nbsp;&nbsp;0、前期准备：<br></h3>
+            	selenium框架：因为qq空间结构复杂，有大量的js渲染。所以如果用常规的方式获取页面html是不行的，除非深入了解页面的js数据，
+            	鉴于要求复杂，所以我选择了内置浏览器内核的selenium框架来实现。这样的话优势可以模拟登陆任何网页，不足就是效率低。
+            	selenium框架可以在其官网上查看文档和下载，需要注意的是该网站需要翻墙~~~了解了selenium的一些API和例子之后，咱们就可以开始爬qq空间了</p>
+            <h3><p>&nbsp;&nbsp;1、配置selenium框架环境</p></h3>
+            <ol>
+            	<li><p>下载导入selenium架构包jar</p></li>
+            	<li><p>下载浏览器第三方驱动，我用的是ChromeDriver(上述文件在官网上都有介绍与下载(并没有中文文档))</p></li>
+            	<li><p>环境搭建好了之后就可以模仿官网的简单例子进行测试</p></li>
+            </ol>
+            <h3>附：此项目中我常用到的一些Api</h3>
+            <p>1、新建driver驱动：WebDriver driver=new ChromeDriver();<br>
+            	2、获取网页连接:driver.get("[this is a Url]");<br>
+            	3、获取网页元素：driver.findElement(By.id("xxx"));<br>
+            	4、元素赋值：WebElement.sendKeys("xxxx");<br>
+            	5、元素点击：WebElement.click();<br>
+            	......具体的参考文档。
+            </p>
+            <h3><p>&nbsp;&nbsp;2、模拟登陆</p></h3>
+
+            	<p>明确目标，qq空间都是以user.qq.com/[qq号]的形式组成，可是访问的话需要自己处于登陆状态。
+            	打开i.qq.com可以发现账号密码输入框，用sendKeys的方法赋值输入账号和密码，然后点击登录按钮。值得注意的是，
+            	这里的登录界面是存在于一个iframe界面的，所以需要driver.switchTo()转到对应的iframe界面中再进行操作 </p>
+
+            <h3><p>&nbsp;&nbsp;3、获取图片链接</p></h3>
+            <ol>
+            	<li><p>登录上空间之后我们就可以抓取不需要访问权限的qq用户信息了，首先访问user.qq.com/[qq]，
+            	会发现相册的链接再上述链接之后加了[/4]，所以我们直接访问user.qq.com/[qq]/4就可以看到用户相册了。
+            	</p></li>
+            	<li><p>然后我们需要具体访问每个相册文件夹，这可以通过一个循环来实现。</p></li>
+            	<li><p>访问到了具体图片后，我们来分析每张图片的压缩图：通过检查元素可得知图片的img链接，复制链接就可以得到图片的压缩版本了。
+            	再然后点击图片来访问大图，复制其链接。这时候我们通过对比就能发现两者之间的规律：压缩图的链接中有个[/m/]，而大图的链接是[/b/].
+            	这样的话，我们就可以通过正则替换来得到所需要的图片源链接</p></li>
+            	<li><p>得到图片链接之后就可以通过Url连接来保存图片到本地了，具体方式参照上文</p></li>
+            </ol>
+            <h3><p>&nbsp;&nbsp;4、fix and test</p></h3>
+            <ul>
+            	<li>整个项目需要注意的有：一些网页元素处于iframe中，必须 通过改变句柄来处理。访问了单个相册文件夹后需要返回，也要注意当前driver的句柄问题。
+            	</li>
+            	<li>整体来说方式还是蛮简单的，想要重构学习的话需要翻墙访问官网，适应纯英语环境。</li>
+            	<li>另外这种方式效率不高是个待优化的问题，还有保存的图片类型为psb，并不能被常规查看，可以用Chrome直接查看(待解决)</li>
+            </ul>
+            <p>效果截图：</p>
+            <img alt="" src="../images/javaPythonOnQzone/1.png">
+            <p>以下是源代码，代码因为隐私问题修改了三处1、目标QQ2、自己的账号3、自己的密码</p>
+            
+<hr>
+
+<pre><code>
+<p>package selenium0;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.<em>;;
+/**
+ </em>
+ <em> @author sharping
+ </em>/</p>
+
+<p>public class Selenium0 {
+    static String QQ=&quot;123456789&quot;;
+    static String path;
+    /**
+     <em> @param args the command line arguments
+     </em>/
+    public static void main(String[] args) throws InterruptedException {
+        path=&quot;f:\temp\&quot;+QQ+&quot;\&quot;;
+        new File(path).mkdirs();
+        List&lt;String&gt; list=getPhotoUrl();
+        optimize(list);</p>
+
+    for(int i=0;i&lt;list.size();i++){
+        try {
+            saveImage(list.get(i),QQ,i);
+        } catch (IOException ex) {
+            Logger.getLogger(Selenium0.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
+static List&lt;String&gt; getPhotoUrl() throws InterruptedException{
+    List&lt;String&gt; listPhotos=new ArrayList();
+    System.setProperty(&quot;webdriver.chrome.driver&quot;, &quot;C:\\Users\\sharping\\AppData\\Local\\Google\\Chrome\\Application\\chromedriver.exe&quot;);
+    WebDriver driver = new ChromeDriver();
+    String url=&quot;http://i.qq.com/&quot;;
+    driver.get(url);
+    System.out.println(&quot;title:&quot;+driver.getTitle());
+
+
+    driver.manage().window().maximize();
+
+    driver.switchTo().frame(&quot;login_frame&quot;).findElement(By.id(&quot;switcher_plogin&quot;)).click();
+    driver.findElement(By.id(&quot;u&quot;)).sendKeys(&quot;[qq账号]&quot;);
+    driver.findElement(By.id(&quot;p&quot;)).sendKeys(&quot;qq密码&quot;);
+    driver.findElement(By.id(&quot;login_button&quot;)).click();Thread.sleep(3000);
+            driver.get(&quot;http://user.qzone.qq.com/&quot;+QQ+&quot;/4&quot;);
+            Thread.sleep(3000);
+            List&lt;WebElement&gt; list=driver.switchTo().frame(&quot;tphoto&quot;).findElements(By.className(&quot;js-album-desc-a&quot;));
+            int folder=list.size();
+            for(int i=0;i&lt;folder;i++)
+           {
+                driver.get(&quot;http://user.qzone.qq.com/&quot;+QQ+&quot;/4&quot;);
+                Thread.sleep(3000);
+                driver.switchTo().frame(&quot;tphoto&quot;).findElements(By.className(&quot;js-album-desc-a&quot;)).get(i).click();
+                Thread.sleep(3000);
+                List&lt;WebElement&gt; listPhoto=driver.findElements(By.className(&quot;j-pl-photoitem-img&quot;));
+                for(int j=0;j&lt;listPhoto.size();j++)
+                    listPhotos.add(listPhoto.get(j).getAttribute(&quot;src&quot;));
+            }
+
+    driver.close();
+    return listPhotos;
+}
+    static void saveImage(String strUrl,String name,int nameIndex) throws MalformedURLException, IOException{
+
+	//构造URL
+	URL url = new URL(strUrl);
+
+	//构造连接
+	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+	//这个网站要模拟浏览器才行
+	conn.setRequestProperty(&quot;User-Agent&quot;,&quot;Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko&quot;);
+
+	//打开连接
+	conn.connect();
+	//打开这个网站的输入流
+	InputStream inStream = conn.getInputStream();
+
+	//用这个做中转站 ，把图片数据都放在了这里，再调用toByteArray()即可获得数据的byte数组
+	ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+
+	byte [] buf = new byte[1024];
+
+	int len = 0;
+	//读取图片数据
+	while((len=inStream.read(buf))!=-1){
+	outStream.write(buf,0,len);
+	}
+	inStream.close();
+	outStream.close();
+	String pathTemp=path+name+nameIndex+&quot;.png&quot;;
+	//把图片数据填入文件中
+	File file = new File(pathTemp);
+
+	FileOutputStream op = new FileOutputStream(file);
+
+	op.write(outStream.toByteArray());
+	System.out.println(pathTemp+&quot; has been saved\n&quot;);
+	op.close();
+
+}
+public static void optimize(List&lt;String&gt; list){
+for(int i=0;i&lt;list.size();i++){
+    String str=list.get(i).replaceAll(&quot;/m/&quot;, &quot;/b/&quot;);
+    list.set(i, str);
+}
+
+<p>}
+}</p>
+</code></pre>
+
+
+
+
+
+            <hr>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="http://github.com">GitHub</a></li>
+              <li><a href="http://www.oschina.net">oschina</a></li>
+              <li><a href="">广告位</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
