@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="wangxp.site,个人网站,文章">
+    <meta name="author" content="sharping,wangxp">
+
+    <title>一个（IP）算法题引发的思考</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="/about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">一个（IP）算法题引发的思考</h2>
+        <p class="lead blog-description">Thinking In one Algorithm</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2016.9.26 by <a href="#">wangxp</a></p><hr>
+            <p>在leetcode上有遇到一个medium算法题：<br>Restore IP Address.</p>
+            <p>Given a string containing only digits, restore it by returning all possible valid IP address combinations . For example:<br>
+			Given "25525511135",<br>
+			return ["255.255.11.135", "255.255.111.35"]. (Order does not matter)</p>
+			<p>大概意思是，对的，就是上述意思</p>
+			<p>然后我就开始解啊，此处省略。。。反正最后就是我用给的实例解出来的。输出也对。接着我就run code了一下，
+			他用一个用例[0000]来简单测试了一下。嗯没错，我的输出也对。然后我就信心满满的submit sulotion提交了</p>
+			<p>然而我是这样的年轻。。。是的代码并没有通过final test，牛x的leetcode也给我提示了：用了一个[#$%#$%#]（记不清了）什么
+			的测试用例证明我错了，于是我就发现哎呀，这代码是有问题，并没有对取得的结果去重，还有忽视了01在java字符串转换的时候会变成1的问题。
+			最后我优化了代码并提交通过了。</p>
+			<p>所以我想说的是，关于代码的全局性和一些未知bug的思考真的是蛮难的。自己写的另一些大代码量的程序更是如此，
+			bug会随着一个模块转移到另一个模块，这是很可怕的。虽然上述例子确实存在我刚解出题时候的急于求成。
+			并没有正式场合的一些良好心态。可能一些算法题为了锻炼你的思路，并不会有太多的注意情况。不过最好还是随时保留着一颗预防的心。
+			很可能下一个bug就make you crazy了。当然，我估计这种全局性思维应该会随着经验的增加，而不断完善的</p>
+<hr>
+<p>最后附上源码：</p>
+<pre><code>
+<p>
+package my;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class leetcodeIP {
+	public static void main(String[] args) {
+		List list=ret(&quot;010010&quot;);
+		if(list.isEmpty())
+			System.out.println(&quot;no&quot;);
+		else
+		for(int i=0;i&lt;list.size();i++){
+			System.out.println(list.get(i));
+		}
+		
+	}
+	public static List&lt;String&gt; ret(String s){
+		List&lt;String&gt;  list=new ArrayList();
+		List&lt;String&gt;  listx=new ArrayList();
+		int i,a,b,c,d;
+		int t1,t2,t3,t4;
+		int len=s.length();
+		char[] ch=s.toCharArray();
+		for(a=1;a&lt;=3;a++){
+			for(b=1;b&lt;=3;b++){
+				for(c=1;c&lt;=3;c++){
+					for(d=1;d&lt;=3;d++){
+						if(a+b+d+c==len){
+							if((t1=Integer.parseInt(s.substring(0,a )))&lt;=255)
+							{
+								if((t2=Integer.parseInt(s.substring(a,a+b )))&lt;=255){
+									if((t3=Integer.parseInt(s.substring(a+b,a+c+b )))&lt;=255){
+										if((t4=Integer.parseInt(s.substring(a+b+c,a+b+c+d )))&lt;=255)
+										{
+											String temp=t1+&quot;.&quot;+t2+&quot;.&quot;+t3+&quot;.&quot;+t4;
+											if(temp.length()==len+3)
+												list.add(temp);
+										}
+											
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		Iterator&lt;String&gt; iter=list.iterator();
+		while(iter.hasNext()){
+			String x=iter.next();
+			if(listx.contains(x))
+				iter.remove();
+			else
+					listx.add(x);
+		}
+		return listx;
+	}
+}
+
+
+</p>
+</code></pre>
+
+
+
+
+            <hr>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="http://github.com">GitHub</a></li>
+              <li><a href="http://www.oschina.net">oschina</a></li>
+              <li><a href="">广告位</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
