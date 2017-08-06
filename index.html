@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-cn">
 <style>
 
@@ -17,6 +17,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/blog.css" rel="stylesheet">
     <link href="css/myCss.css" rel="stylesheet">
+ 	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.js"></script>
   </head>
   <body>
     
@@ -25,6 +26,7 @@
         <nav class="blog-nav">
           <a class="blog-nav-item active" href="/">Home</a>
           <a class="blog-nav-item" href="about.html">About</a>
+          <span class="blog-nav-item nav-right" href="#" id="city"></span>
         </nav>
       </div>
     </div>
@@ -54,12 +56,15 @@
     	<h4><a class="muted" href="myResume.html"></a></h4>
     </div>
     
-    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/analytics.js"></script>
-    
+</body>
 
-  </body>
-
-  
+<script type="text/javascript">
+	$(function(){ 
+	$("#city").html(returnCitySN["cname"]);
+}); 
+</script>
+ <script src="js/bootstrap.min.js"></script>
+ <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>  
+ <script src="js/analytics.js"></script>
+ 
 </html>
