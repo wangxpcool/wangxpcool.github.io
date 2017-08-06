@@ -59,8 +59,9 @@
 </body>
 
 <script type="text/javascript">
-	$(function(){ 
-	$("#city").html(returnCitySN["cname"]);
+	$(function(){
+	var cityName=returnCitySN["cname"];
+	$("#city").html(cityName.substring(0,cityName.length-1));
 }); 
 </script>
  <script src="js/bootstrap.min.js"></script>
