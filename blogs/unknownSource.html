@@ -51,7 +51,7 @@
             	上关于英文相关的专业参考资料还是蛮少的），后面实在没办法了就用Google搜索到了unknown source的一点东西。最后看到有人建议在build.xml设置debug=true，
             	而刚刚好我们的项目也需要build一个基础包，于是默默地修改代码，提交上去，等到正式版本发布了，异常就准确的显示了基础包里面的某个方法错误。well done:)</p>
             
-            <p><h3>结论：</h3>在需要生成基础jar包的时候，如果可以，尽量在build.xml里设置好debug=true这一属性。这样使得程序报异常的时候能够准确追踪异常代码，</p>
+            <p><h3>结论：</h3>在需要生成基础jar包的时候，如果可以，尽量在build.xml里的javac命令后面设置好debug=true这一属性。这样使得程序报异常的时候能够准确追踪异常代码，</p>
 			<p><h3>222更：</h3>之前一直没在百度上搜索到unknown source整行代码内容。然后后面写这篇log的时候居然又百度到了一篇相关博客，
 			感觉博主写的蛮不错的，很详细，大家可以移步看看<a href="http://www.blogjava.net/landon/archive/2011/02/27/345265.html">click here</a></p>
 
