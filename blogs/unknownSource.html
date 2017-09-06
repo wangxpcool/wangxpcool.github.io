@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="wangxp.site,个人网站,文章">
+    <meta name="author" content="sharping,wangxp">
+
+    <title>Tech Log:"Unknown Source" in java debug</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="/about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">Tech Log:"Unknown Source" in java debug</h2>
+        <p class="lead blog-description">wangxp.site</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2017.9.6 by <a href="#">wangxp</a></p>
+            <hr>
+            <p>前几天遇到一个bug（过程大家可以忽略，直接看结论），只出现在正式版本上，测试版本一直没出现问题。因为打印了stackTree，所以能够看到报错是某一个具体方法
+            	的问题，但是这个stackTree就仅仅只是追踪到该错误方法外，显示xxx.xxx.function(Unknown Source)。
+            	最终显示的异常是java.lang.NullPointerException。由于当时不是特别了解项目类中仅仅加一个set方法就能够调用其他类的实现逻辑，所以我
+            	根据后面报的reflict反射异常一直以为是spring里面的配置哪出错了。然后开始将报错信息分开复制出来百度，百度了半天也没结果（不得不说百度
+            	上关于英文相关的专业参考资料还是蛮少的），后面实在没办法了就用Google搜索到了unknown source的一点东西。最后看到有人建议在build.xml设置debug=true，
+            	而刚刚好我们的项目也需要build一个基础包，于是默默地修改代码，提交上去，等到正式版本发布了，异常就准确的显示了基础包里面的某个方法错误。well done:)</p>
+            
+            <p><h3>结论：</h3>在需要生成基础jar包的时候，如果可以，尽量在build.xml里设置好debug=true这一属性。这样使得程序报异常的时候能够准确追踪异常代码，</p>
+			<p><h3>222更：</h3>之前一直没在百度上搜索到unknown source整行代码内容。然后后面写这篇log的时候居然又百度到了一篇相关博客，
+			感觉博主写的蛮不错的，很详细，大家可以移步看看<a href="http://www.blogjava.net/landon/archive/2011/02/27/345265.html">click here</a></p>
+
+            <hr>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="http://github.com">GitHub</a></li>
+              <li><a href="http://www.oschina.net">oschina</a></li>
+              <li><a href="">广告位</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+	<script src="../js/analytics.js"></script>
+  </body>
+</html>
