@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="wangxp.site,个人网站,文章">
+    <meta name="author" content="sharping,wangxp">
+
+    <title>spring 学习笔记</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="/about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">spring 学习笔记</h2>
+        <p class="lead blog-description">wangxp.site</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2017.9.6 by <a href="#">wangxp</a></p>
+            <hr>
+            <p>这篇主要写点学习spring的内容笔记，内容可能很乱，后面有时间慢慢整理吧</p>
+            <p><h4>1.bean</h4>
+            	首先spring的一个重要的属性就是控制反转（Inversion of Control），这种机制使得我们能够通过spring来管理项目中的对象（其实现方式主要是靠java的反射机制来实现的，因为
+            	以前看过一篇spring的简易实现源码:)。这样的机制在程序中大概就是以bean的形式实现的，在配置文件中，可以把每个对象以<br>
+            	<code>&lt;bean id=&quot;beanid&quot; class=&quot;beanclass&quot; autowire=&quot;way&quot;&gt;&lt;/bean&gt;</code>这样的形式交给spring管理。
+            	其中beanid是每个bean的唯一id，class是对应于项目的类名称。 autowire指通过何种方式注入。<br>
+            	另外如果在一个bean中需要注入其他bean的时候，就需要加上<br>
+            	<code>&lt;property name=&quot;beanname&quot; ref=&quot;beanid&quot;/&gt;</code>其中beanid是其他bean的唯一id
+            </p>
+            <p><h4>2.bean的使用</h4>
+            	配置好bean了就可以使用bean了，使用有好几种方式，包括注解等等，这里介绍一种非注解的方式。<br>
+            	springFramework提供了一个BeanFactory类（org.springframework.beans.factory.BeanFactory）来对所有bean进行管理，
+            	可以通过其beanFactory.getBean(beanName)的方式来获取对应的类实例对象。但是总不能每次需要使用bean的时候就新建一个BeanFactory吧。
+            	所以我们可以新建一个单例对象serviceLocator来对BeanFactory进行管理使用。当需要生产新的常规bean对象时，我们只需要将其beanId传给serviceLocator,
+            	再由其调用BeanFactory的方法即可。
+            	
+            </p>
+            <p>慢慢更新吧</p>
+
+            <hr>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="http://github.com">GitHub</a></li>
+              <li><a href="http://www.oschina.net">oschina</a></li>
+              <li><a href="">广告位</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+	<script src="../js/analytics.js"></script>
+  </body>
+</html>
