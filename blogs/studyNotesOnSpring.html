@@ -47,7 +47,7 @@
             <p>这篇主要写点学习spring的内容笔记，内容可能很乱，后面有时间慢慢整理吧</p>
             <p><h4>1.bean</h4>
             	首先spring的一个重要的属性就是控制反转（Inversion of Control），这种机制使得我们能够通过spring来管理项目中的对象（其实现方式主要是靠java的反射机制来实现的，因为
-            	以前看过一篇spring的简易实现源码:)。这样的机制在程序中大概就是以bean的形式实现的，在配置文件中，可以把每个对象以<br>
+            	以前看过一篇spring的简易实现源码:)。这样的机制在程序中大概就是以bean的形式呈现的，在配置文件中，可以把每个对象以<br>
             	<code>&lt;bean id=&quot;beanid&quot; class=&quot;beanclass&quot; autowire=&quot;way&quot;&gt;&lt;/bean&gt;</code>这样的形式交给spring管理。
             	其中beanid是每个bean的唯一id，class是对应于项目的类名称。 autowire指通过何种方式注入。<br>
             	另外如果在一个bean中需要注入其他bean的时候，就需要加上<br>
