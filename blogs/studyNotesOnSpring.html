@@ -48,7 +48,7 @@
             <p><h4>1.bean</h4>
             	首先spring的一个重要的属性就是控制反转（Inversion of Control），这种机制使得我们能够通过spring来管理项目中的对象（其实现方式主要是靠java的反射机制来实现的，因为
             	以前看过一篇spring的简易实现源码:)。这样的机制在程序中大概就是以bean的形式呈现的，在配置文件中，可以把每个对象以<br>
-            	<code>&lt;bean id=&quot;beanid&quot; class=&quot;beanclass&quot; autowire=&quot;way&quot;&gt;&lt;/bean&gt;</code>这样的形式交给spring管理。
+            	<code>&lt;bean id=&quot;beanid&quot; class=&quot;beanclass&quot; autowire=&quot;byName&quot;&gt;&lt;/bean&gt;</code>这样的形式交给spring管理。
             	其中beanid是每个bean的唯一id，class是对应于项目的类名称。 autowire指通过何种方式注入。<br>
             	另外如果在一个bean中需要注入其他bean的时候，就需要加上<br>
             	<code>&lt;property name=&quot;beanname&quot; ref=&quot;beanid&quot;/&gt;</code>其中beanid是其他bean的唯一id
@@ -60,6 +60,14 @@
             	所以我们可以新建一个单例对象serviceLocator来对BeanFactory进行管理使用。当需要生产新的常规bean对象时，我们只需要将其beanId传给serviceLocator,
             	再由其调用BeanFactory的方法即可。
             	
+            </p>
+            <p><h4>3.bean的补充</h4>
+            	对于class的使用，会有在类中引用其他类的情景，这也在bean的配置中得以体现：<br>
+            	&lt;bean id=&quot;beanid&quot; class=&quot;beanclass&quot; &gt;<br>
+				&lt;property name=&quot;xxx&quot; ref=&quot;xxxx&quot;&gt;&lt;/property&gt;<br>
+				&lt;/bean&gt;<br>
+				此外，也可以使用'自动装配 autowire'的方式来进行配置，这样的话，对于bean当中引用的其他bean的时候就不需要我们自己去配置它该使用哪个类,Spring 的自动装配可以帮助我们完成这些工作，
+				极大的方便了我们的使用（这也解释了之前我不了解的‘class中定义一个class再加一个setter方法就能够使用这个class的实现方式’）
             </p>
             <p>慢慢更新吧</p>
 
