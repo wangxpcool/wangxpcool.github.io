@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="wangxp.site,个人网站,文章">
+    <meta name="author" content="sharping,wangxp">
+
+    <title>算法：动态规划</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="/about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">算法：动态规划</h2>
+        <p class="lead blog-description">dp(dynamic programming)</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2018.6.12 by <a href="#">wangxp</a></p>
+            <p>来学习一下动态规划算法(本文大部分都是摘抄的，具体细节请自行百度)</p>
+            <hr>
+            <h3><p>&nbsp;&nbsp;1、动态规划定义</p></h3>
+            <ol>
+            	<li><p>动态规划实际上是一类题目的总称，并不是指某个固定的算法。动态规划的意义就是通过采用递推（或者分而治之）的策略，通过解决大问题的子问题从而解决整体的做法。动态规划的核心思想是巧妙的将问题拆分成多个子问题，通过计算子问题而得到整体问题的解。而子问题又可以拆分成更多的子问题，从而用类似递推迭代的方法解决要求的问题。</p></li>
+            </ol>
+            <h3><p>&nbsp;&nbsp;2、动态规划解法</p></li></h3>
+            <ol>
+            	<li><p>状态的定义：<br>
+            		对于问题:<code>求一个数列中最大连续子序列的和。</code>我们将其转化为状态定义：<code>
+            		Fk是第k项前的最大序列和，求F1～FN中最大值。</code>
+            	</p></li>
+            	<li><p>状态转移方程的定义：<code><br>Fk=max{Fk-1+Ak,Ak} <br>
+						Fk是前k项的和，Ak是第k项的值</code></p></li>
+            </ol>
+            <h3><p>&nbsp;&nbsp;3、例子</p></li></h3>
+            <p>&nbsp;&nbsp;一个N*N矩阵中有不同的正整数，经过这个格子，就能获得相应价值的奖励，从左上走到右下，只能向下向右走，求能够获得的最大价值。例如：3 * 3的方格。
+
+<br>1 3 3 
+<br>2 1 3 
+<br>2 2 1 
+
+能够获得的最大价值为：11。</p><br>
+			<p></p>
+            <p>以下是对上面问题的解法。附：解法2是标准解法，解法1是我用递归实现的。</p>
+<hr>
+
+<pre><code>
+	package me.algorithm;
+	import java.util.Scanner;
+	public class DP {
+	static int a[][]= {{1,3,3},{2,1,3},{2,2,1}};
+	public static void main(String[] args) {
+		
+		System.out.println(dp2(0,0));
+		
+	}
+	static int dp2( int i ,int j){//自己用递归实现了一遍
+		if(i==2&&j==2){
+			return a[i][j];
+		}
+		int a1,b1;
+		if(i<2){
+			a1= dp2(i+1,j);
+		}else{
+			a1=0;
+		}
+		if(j<2)
+			b1= dp2(i,j+1);
+		else{
+			b1=0;
+		}
+		return Math.max(a1,b1)+a[i][j];
+	}
+	void dp1(){//这是别人的标准dp解法
+	Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        long max = 0;
+        int[][] dp = new int[n][n];
+        dp[0][0] = in.nextInt();
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                int num = in.nextInt();
+                if (j == 0)
+                    dp[i][j] = dp[i - 1][j] + num;
+                else
+                    dp[i][j] = Math.max(dp[i - 1][j - 1], dp[i - 1][j]) + num;
+                max = Math.max(dp[i][j], max);
+            }
+        }
+        System.out.println(max);
+	}
+}
+	
+</code></pre>
+
+
+
+
+
+            <hr>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="http://github.com">GitHub</a></li>
+              <li><a href="http://www.oschina.net">oschina</a></li>
+              <li><a href="">ADs</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="../js/analytics.js"></script>
+  </body>
+</html>
