@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="wangxp.site,个人网站,文章">
+    <meta name="author" content="sharping,wangxp">
+
+    <title>分布式定时任务-quartz</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../css/blog.css" rel="stylesheet">
+
+    <script src="../js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="/">Home</a>
+          <a class="blog-nav-item" href="/about.html">About</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">分布式定时任务-quartz</h2>
+        <p class="lead blog-description">quartz</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <!-- <h2 class="blog-post-title">Sample blog post</h2> -->
+            <p class="blog-post-meta">2018.6.12 by <a href="#">wangxp</a></p>
+            <p>最近工作内容有分布式定时任务的需求，所以了解一下quartz</p>
+            <hr>
+              <h3><p>&nbsp;&nbsp;概述</p></li></h3>
+              <ol>
+                  <li><p>之前项目用的spring boot 自带的schedule定时任务，这个框架用起来也是蛮方便的，但是不支持在多个服务器上运行。然后采用了quartz框架，支持分布式部署。</p></li>
+                  <li><p>quartz没有集群之间的通信，把通信放在了各个集群共用的数据库里，个人猜测是每个节点到点了，就去请求数据库，如果没有执行则执行一下，顺便设置个信号量让其他节点不执行</p></li>
+              </ol>
+            <h3><p>&nbsp;&nbsp;1、建立统一用的quartz相关的数据库表（11张表）</p></h3>
+            <ol>
+            	<li><p>数据库脚本网上搜一搜就有了。</p></li>
+            </ol>
+            <h3><p>&nbsp;&nbsp;2、顺着网上一些教程的配置，配好数据库连接，设置定时任务实例，添加Job等等</p></li></h3>
+            <ol>
+            	<li><p>大概的流程大家百度下基本就有了。</p></li>
+            </ol>
+            <h3><p>&nbsp;&nbsp;3、注意和优化</p></li></h3>
+              <p>&nbsp;&nbsp;1)添加Job的时候，需要写一个继承Job类的子类，并重写其execute方法，为了方便管理，想在execute方法实例化其他的类。这时直接用spring的注解@Autowired是不行的。
+              需要自定义一个使用spring bean 方式的JobFactory才行。（这里的配置稍微有点麻烦，我就不贴代码出来了）</p>
+			<p>&nbsp;&nbsp;2)由于我这边的定时任务基本是不会动态改变的，所以只需要静态配置即可，这个简单，在spring boot 的main 方法中添加Job就好了，注意下每次添加的时候需要判断去重</p>
+            <p>&nbsp;&nbsp;3)测试时正常运行，在某个节点停止的时候，其他节点依旧会正常运行。</p>
+<hr>
+
+<pre><code>
+	package me.algorithm;
+	import java.util.Scanner;
+	public class DP {
+	static int a[][]= {{1,3,3},{2,1,3},{2,2,1}};
+	public static void main(String[] args) {
+		
+		System.out.println(dp2(0,0));
+		
+	}
+	static int dp2( int i ,int j){//自己用递归实现了一遍
+		if(i==2&&j==2){
+			return a[i][j];
+		}
+		int a1,b1;
+		if(i<2){
+			a1= dp2(i+1,j);
+		}else{
+			a1=0;
+		}
+		if(j<2)
+			b1= dp2(i,j+1);
+		else{
+			b1=0;
+		}
+		return Math.max(a1,b1)+a[i][j];
+	}
+	void dp1(){//这是别人的标准dp解法
+	Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        long max = 0;
+        int[][] dp = new int[n][n];
+        dp[0][0] = in.nextInt();
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                int num = in.nextInt();
+                if (j == 0)
+                    dp[i][j] = dp[i - 1][j] + num;
+                else
+                    dp[i][j] = Math.max(dp[i - 1][j - 1], dp[i - 1][j]) + num;
+                max = Math.max(dp[i][j], max);
+            }
+        }
+        System.out.println(max);
+	}
+}
+	
+</code></pre>
+
+
+
+
+
+            <hr>
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>there is no about</p>
+          </div>
+          
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="http://github.com">GitHub</a></li>
+              <li><a href="http://www.oschina.net">oschina</a></li>
+              <li><a href="">ADs</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      <p>There is no Copyright , All rights cannot be reserved , Created by <a href="http://wangxp.site">wangxp</a> </p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="../js/analytics.js"></script>
+  </body>
+</html>
